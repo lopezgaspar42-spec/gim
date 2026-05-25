@@ -307,6 +307,11 @@ body {
   padding: 12px 14px;
   background: var(--surface);
 }
+.log-section {
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  background: var(--surface);
+}
 .log-title {
   font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
   color:var(--accent2); margin-bottom:10px;
@@ -608,46 +613,45 @@ body {
 // ═══════════════════════════════════════════
 const DEFAULT_DAYS = [
   {
-    id:'d1', title:'Piernas A', sub:'Fuerza y estabilidad de rodilla · Cuádriceps, isquiotibiales y glúteos',
+    id:'d1', title:'Piernas A', sub:'Fuerza Intensa y Estabilidad · Cuádriceps, Isquios y Glúteos con Tempo',
     warmup:'Bicicleta estática o caminata en cinta con inclinación',
     warmupNote:'50–60% esfuerzo. Activar circulación sin estrés articular.',
-    pausas:[{val:'90"',lbl:'Piernas entre series'},{val:'60"',lbl:'Core entre series'},{val:'2–3\'',lbl:'Entre ejercicios'}],
+    pausas:[{val:'60"',lbl:'Piernas entre series'},{val:'45"',lbl:'Core entre series'},{val:'2\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d1e1',name:'Sentadilla goblet con mancuerna',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 10 kg',pausa:'90 seg',musculos:['Cuádriceps','Glúteos'],tip:'Bajá hasta 90° o donde toleres sin dolor. <strong>Rodilla alineada con el pie</strong>, no adentro. Espalda recta.'},
-      {id:'d1e2',name:'Estocada búlgara con mancuernas',sec:'principal',series:'3 series',reps:'8–10 reps c/pierna',carga:'≤ 4 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Glúteos','Estabilidad LCA'],tip:'Pie trasero apoyado en banco. <strong>Bajá lento (3 seg)</strong>, rodilla delantera alineada con el pie. Comenzá sin peso para dominar el equilibrio.'},
-      {id:'d1e3',name:'Peso muerto rumano con mancuernas',sec:'principal',series:'3 series',reps:'10–12 reps',carga:'≤ 10 kg total',pausa:'90 seg',musculos:['Isquiotibiales','Glúteos'],tip:'<strong>Espalda recta, bisagra de cadera.</strong> Bajá hasta sentir estiramiento de isquiotibiales. Sin flexionar rodillas de más.'},
-      {id:'d1e4',name:'Step-up con mancuerna (cajón bajo)',sec:'principal',series:'3 series',reps:'10 reps c/pierna',carga:'≤ 5 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Equilibrio LCA'],tip:'Cajón a <strong>20–30 cm</strong>. Activa estabilizadores sin cizalla. Comenzá sin peso si es necesario.'},
-      {id:'d1e5',name:'Elevación de pantorrillas de pie',sec:'principal',series:'3 series',reps:'15–20 reps',carga:'Peso corporal',pausa:'60 seg',musculos:['Gemelos'],tip:'Fundamental para el fútbol. <strong>Movimiento lento y controlado</strong>, especialmente en la bajada (3 seg).'},
-      {id:'d1e6',name:'Pallof press con banda elástica',sec:'core',series:'3 series',reps:'10–12 reps c/lado',carga:'Banda liviana',pausa:'60 seg',musculos:['Core antirotación','Estabilidad'],tip:'Anclar la banda a la altura del pecho. Empujá con ambas manos al frente y <strong>resistí la rotación</strong>. Clave para el fútbol.'},
+      {id:'d1e1',name:'Sentadilla Búlgara Deficitaria',sec:'principal',series:'3 series',reps:'12 reps c/pierna',carga:'≤ 5 kg c/mano',pausa:'60 seg',musculos:['Cuádriceps','Glúteos','Estabilidad LCA'],tip:'Pie delantero sobre disco o plataforma baja. <strong>Bajá lento en 4 segundos exactos</strong>, sostené 1 segundo abajo y subí controlado. Alineación estricta de rodilla.'},
+      {id:'d1e2',name:'Estocada búlgara tradicional',sec:'principal',series:'3 series',reps:'10–12 reps c/pierna',carga:'≤ 5 kg c/mano',pausa:'60 seg',musculos:['Cuádriceps','Glúteos'],tip:'Foco absoluto en el **Tempo 4-1-1**. Controlá la bajada milimétricamente sin apurarte.'},
+      {id:'d1e3',name:'Peso Muerto Rumano B-Stance',sec:'principal',series:'3 series',reps:'12 reps c/pierna',carga:'≤ 10 kg total',pausa:'60 seg',musculos:['Isquiotibiales','Glúteos'],tip:'Un pie adelante firme, el de atrás un paso rezagado apoyando solo la puntita. Hacé bisagra de cadera. <strong>Bajá en 4 segundos</strong> sintiendo el isquio delantero.'},
+      {id:'d1e4',name:'Step-up Excéntrico (Cajón Medio)',sec:'principal',series:'3 series',reps:'10 reps c/pierna',carga:'≤ 5 kg c/mano',pausa:'60 seg',musculos:['Cuádriceps','Equilibrio LCA'],tip:'Cajón a altura de rodilla. Subí con fuerza y <strong>tardá 4 segundos enteros en bajar</strong> hasta rozar el piso con la punta.'},
+      {id:'d1e5',name:'Sillón de Cuádriceps Unilateral',sec:'principal',series:'3 series',reps:'12–15 reps c/p',carga:'Carga liviana',pausa:'60 seg',musculos:['Cuádriceps','Rehabilitación LCA'],tip:'A una sola pierna. Extendé, <strong>congelá el movimiento 2 segundos arriba</strong> apretando el cuádriceps y bajá en 3 segundos con control.'},
+      {id:'d1e6',name:'Elevación de Pantorrillas Unilateral',sec:'principal',series:'3 series',reps:'15–20 reps c/p',carga:'≤ 10 kg mano',pausa:'60 seg',musculos:['Gemelos','Fútbol'],tip:'En el borde de un escalón a una sola pierna. Sostené la mancuerna del mismo lado. Bajá en 3 segundos, estirá 1 segundo abajo y subí explosivo.'},
+      {id:'d1e7',name:'Circuito Core A (Estático)',sec:'core',series:'3 vueltas',reps:'Ver tipos',carga:'Peso corporal',pausa:'45 seg',musculos:['Core profundo','Estabilidad'],tip:'<strong>Circuito seguido:</strong> Plancha Frontal (45") ➡️ Plancha Lateral (30" c/lado) ➡️ Deadbug (12 lentas por lado). Descansá 45" al final de la vuelta.'},
     ]
   },
   {
-    id:'d2', title:'Tren Superior', sub:'Pecho, espalda, hombros y brazos · Cargas controladas ≤ 10 kg',
+    id:'d2', title:'Tren Superior', sub:'Estabilidad y Resistencia Funcional · Cargas Controladas ≤ 10 kg',
     warmup:'Remo en máquina o banda elástica liviana + movilidad de hombros (círculos, rotaciones)',
     warmupNote:'Activar escápulas y dorsal. Intensidad baja.',
-    pausas:[{val:'90"',lbl:'Tren sup. entre series'},{val:'60"',lbl:'Core entre series'},{val:'2\'',lbl:'Entre ejercicios'}],
+    pausas:[{val:'60"',lbl:'Tren sup. entre series'},{val:'45"',lbl:'Core entre series'},{val:'2\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d2e1',name:'Flexiones de brazos',sec:'principal',series:'3 series',reps:'Al fallo o 15 máx',carga:'Peso corporal',pausa:'90 seg',musculos:['Pecho','Tríceps','Core'],tip:'<strong>Exhalar al subir.</strong> Cuerpo en línea recta, sin dejar caer la cadera. Si es muy difícil, hacelas con rodillas apoyadas.'},
-      {id:'d2e2',name:'Remo con mancuerna a una mano',sec:'principal',series:'3 series',reps:'12 reps c/lado',carga:'≤ 8 kg',pausa:'90 seg',musculos:['Dorsal','Bíceps'],tip:'Apoyo en banco. <strong>Codo cerca del cuerpo.</strong> No rotar el torso en exceso. Bajá el peso con control (3 seg).'},
-      {id:'d2e3',name:'Press militar con mancuernas sentado',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 5 kg c/mano',pausa:'90 seg',musculos:['Hombros','Tríceps'],tip:'Sentado <strong>con respaldo</strong> para no comprometer la espalda baja. Exhalar al empujar hacia arriba.'},
-      {id:'d2e4',name:'Curl bíceps + Extensión tríceps (superserie)',sec:'principal',series:'3 series',reps:'12 reps c/ejercicio',carga:'≤ 5 kg c/mano',pausa:'90 seg entre superseries',musculos:['Bíceps','Tríceps','Superserie'],tip:'<strong>Superserie:</strong> 12 curl de bíceps y sin descanso 12 extensiones de tríceps sobre la cabeza. Codos fijos al cuerpo en el curl.'},
-      {id:'d2e5',name:'Vuelos laterales con mancuernas',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 4 kg c/mano',pausa:'60 seg',musculos:['Hombros','Deltoides lateral'],tip:'<strong>Codos ligeramente flexionados</strong>, subí hasta altura de hombros — no más. Bajá lento (3 seg). Usá menos peso del que creés.'},
-      {id:'d2e6',name:'Dead bug (bicho muerto)',sec:'core',series:'3 series',reps:'8–10 reps c/lado',carga:'Peso corporal',pausa:'60 seg',musculos:['Core profundo','Coordinación'],tip:'Acostado boca arriba, rodillas a 90°. Extendé brazo y pierna opuestos <strong>sin despegar la espalda baja del piso.</strong>'},
+      {id:'d2e1',name:'Flexiones de brazos en TRX',sec:'principal',series:'3 series',reps:'Al fallo técnico',carga:'Peso corporal',pausa:'60 seg',musculos:['Pecho','Tríceps','Core Estable'],tip:'Cuerpo firme como una tabla. <strong>Bajá en 3 segundos</strong> controlando la inestabilidad. Exhalá fuerte por la boca al subir (importante CIV).'},
+      {id:'d2e2',name:'Remo Unilateral Dinámico',sec:'principal',series:'4 series',reps:'12 reps c/lado',carga:'≤ 10 kg',pausa:'60 seg',musculos:['Dorsal','Bíceps'],tip:'Apoyo firme en banco. Llevá la mancuerna hacia la cadera. Subí en 1 segundo, <strong>apretá la espalda arriba 2 segundos</strong> y bajá en 3 segundos.'},
+      {id:'d2e3',name:'Press Militar sentado con mancuernas',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 4 kg c/mano',pausa:'60 seg',musculos:['Hombros','Tríceps'],tip:'Espalda bien apoyada en el respaldo. Bajada controlada en 3 segundos. <strong>Prohibido contener el aliento</strong>; soltá el aire al subir.'},
+      {id:'d2e4',name:'Vuelos Laterales con Pausa Isométrica',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 4 kg c/mano',pausa:'60 seg',musculos:['Hombros','Deltoides'],tip:'Codos levemente flexionados. Subí a la altura de los hombros y <strong>quedate congelado arriba 2 segundos enteros</strong> antes de bajar lento en 3 segundos.'},
+      {id:'d2e5',name:'Bíceps Mancuerna + Tríceps Polea (Superserie)',sec:'principal',series:'3 series',reps:'12 reps c/ejercicio',carga:'6kg c/m / 15kg pol',pausa:'45 seg',musculos:['Bíceps','Tríceps','Congestión'],tip:'Hacé las 12 de bíceps e inmediatamente pasá a las 12 de tríceps en polea. Bajada lenta en ambos. Pausa muy corta de 45".'},
+      {id:'d2e6',name:'Circuito Core B (Dinámico)',sec:'core',series:'3 vueltas',reps:'Ver tipos',carga:'Banda / Propio',pausa:'45 seg',musculos:['Core antirotación','Control'],tip:'<strong>Circuito seguido:</strong> Pallof Press con banda (12 reps c/lado) ➡️ Plancha con Toques de Hombro (10 c/lado, cadera fija) ➡️ Bird-Dog (12 reps c/lado lentas). Pausa 45".'},
     ]
   },
   {
-    id:'d3', title:'Piernas B + Core', sub:'Potencia de glúteo, estabilidad rodilla y core funcional para el fútbol',
+    id:'d3', title:'Piernas B', sub:'Potencia de Glúteo, Cadena Posterior y Core Funcional para Fútbol',
     warmup:'Trote suave o elíptica + movilidad de cadera (círculos, peso muerto a 1 pierna sin carga)',
     warmupNote:'Activar cadena posterior antes de trabajar glúteos e isquios.',
-    pausas:[{val:'90"',lbl:'Piernas entre series'},{val:'60"',lbl:'Core entre series'},{val:'2–3\'',lbl:'Entre ejercicios'}],
+    pausas:[{val:'60"',lbl:'Piernas entre series'},{val:'45"',lbl:'Core entre series'},{val:'2\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d3e1',name:'Hip thrust (peso corporal o mancuerna)',sec:'principal',series:'4 series',reps:'15 reps',carga:'≤ 10 kg sobre cadera',pausa:'90 seg',musculos:['Glúteos','Isquiotibiales'],tip:'Clave para el fútbol: activa el glúteo mayor <strong>sin cargar la rodilla.</strong> Hombros en banco, rodillas a 90°. Apretá glúteo en la cima.'},
-      {id:'d3e2',name:'Zancada estática con mancuernas',sec:'principal',series:'3 series',reps:'10 reps c/pierna',carga:'≤ 4 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Glúteos','Estabilidad LCA'],tip:'<strong>Estática primero</strong> (sin desplazamiento) para menor estrés en el LCA. Torso erguido, rodilla delantera no supera la punta del pie.'},
-      {id:'d3e3',name:'Curl femoral (máquina o mancuerna)',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'Ligera, sin dolor',pausa:'90 seg',musculos:['Isquiotibiales'],tip:'Fundamental post-LCA: fortalecer el isquiotibial <strong>equilibra la tensión</strong> sobre el ligamento. Movimiento suave, sin rebote.'},
-      {id:'d3e4',name:'Abducción de cadera (máquina o banda)',sec:'principal',series:'3 series',reps:'15–20 reps',carga:'Moderada',pausa:'60 seg',musculos:['Glúteo medio','Estabilidad rodilla'],tip:'El glúteo medio <strong>previene el valgo de rodilla</strong> al correr y patear. Imprescindible en rehabilitación de LCA.'},
-      {id:'d3e5',name:'Plancha frontal isométrica',sec:'core',series:'3 series',reps:'20–40 seg',carga:'Peso corporal',pausa:'60 seg',musculos:['Core'],tip:'<strong>Respiración continua</strong> — nunca retener el aliento. Cuerpo en línea recta. No dejar caer la cadera.'},
-      {id:'d3e6',name:'Plancha lateral (cada lado)',sec:'core',series:'3 series c/lado',reps:'20–30 seg',carga:'Peso corporal',pausa:'60 seg',musculos:['Core lateral','Cadera'],tip:'Fortalece el core lateral, crucial para los <strong>cambios de dirección</strong> en el fútbol. Cadera arriba, sin dejarla caer.'},
-      {id:'d3e7',name:'Dead bug (brazo y pierna opuestos)',sec:'core',series:'3 series',reps:'8–10 reps c/lado',carga:'Peso corporal',pausa:'60 seg',musculos:['Core profundo'],tip:'Bajo esfuerzo cardiovascular — ideal para cardíacos. Activa el transverso abdominal. <strong>Espalda baja siempre pegada al piso.</strong>'},
+      {id:'d3e1',name:'Hip Thrust Unilateral',sec:'principal',series:'4 series',reps:'15 reps c/p',carga:'Peso corporal',pausa:'60 seg',musculos:['Glúteos','Isquiotibiales','Potencia'],tip:'A una sola pierna. Subí firme extendiendo la cadera, <strong>apretá fuerte el glúteo arriba 2 segundos</strong> y bajá controlado. Clave para el pique.'},
+      {id:'d3e2',name:'Sentadilla Skater (Skater Squat)',sec:'principal',series:'3 series',reps:'8–10 reps c/p',carga:'≤ 2.5 kg c/mano',pausa:'60 seg',musculos:['Cuádriceps','Glúteo Medio','Estabilidad'],tip:'A una pierna, llevá la otra atrás suspendida en el aire hasta que la rodilla roce suave el piso (usá colchoneta). Mancuernas chicas de contrapeso.'},
+      {id:'d3e3',name:'Camilla de Isquiotibiales Unilateral',sec:'principal',series:'3 series',reps:'12–15 reps c/p',carga:'Carga ligera',pausa:'60 seg',musculos:['Isquiotibiales','Freno LCA'],tip:'Trabajá cada pierna por separado. Flexioná normal y <strong>tardá 4 segundos exactos en estirar la pierna (excéntrico)</strong>. Crucial post-LCA.'},
+      {id:'d3e4',name:'Abducción de Cadera en Máquina',sec:'principal',series:'3 series',reps:'15–20 reps',carga:'Moderada',pausa:'60 seg',musculos:['Glúteo medio','Estabilidad rodilla'],tip:'Mantené el torso firme. Movimiento controlado buscando la quema en el lateral de la cadera. Previene el valgo de rodilla en frenos.'},
+      {id:'d3e5',name:'Circuito Core A (Rotativo)',sec:'core',series:'3 vueltas',reps:'Ver tipos',carga:'Peso corporal',pausa:'45 seg',musculos:['Core'],tip:'Repetimos el Bloque Estático: Plancha Frontal (45") ➡️ Plancha Lateral (30" c/lado) ➡️ Deadbug (12 lentas por lado). Mantener respiración continua.'},
     ]
   }
 ];
@@ -687,9 +691,9 @@ function renderHome() {
   const totalLogs = Object.values(logs).reduce((a,b)=>a+b.length,0);
   s.innerHTML = `
     <div class="home-hero">
-      <div class="home-hero-label">Rutina personalizada</div>
+      <div class="home-hero-label">Rutina avanzada por tempos</div>
       <h1>MI <span>RUTINA</span><br>DE GYM</h1>
-      <div class="home-hero-sub">CIV sin shunt residual · Post-LCA · Fútbol</div>
+      <div class="home-hero-sub">CIV sin shunt residual · Post-LCA · Enfoque Fútbol</div>
     </div>
     <div id="installBanner" class="install-banner">
       <div class="install-banner-text">
@@ -700,7 +704,7 @@ function renderHome() {
     </div>
     <div class="alert-card">
       <div class="ai">⚠️</div>
-      <p>Adaptada para <strong>CIV sin shunt residual</strong> y <strong>post-LCA</strong>. Carga máx. 10 kg. Exhalar siempre al hacer fuerza.</p>
+      <p>Adaptada para <strong>CIV sin shunt residual</strong> y <strong>post-LCA</strong>. Estricto ≤ 10 kg libres / 15 kg poleas. Exhalar siempre en esfuerzo.</p>
     </div>
     <div class="stats-row">
       <div class="stat-card"><span class="stat-val">3</span><span class="stat-lbl">Días / sem.</span></div>
@@ -726,7 +730,6 @@ function renderHome() {
         </div>`;
       }).join('')}
     </div>`;
-  // Show install banner if available
   if(deferredInstall) document.getElementById('installBanner').classList.add('show');
 }
 
@@ -737,7 +740,6 @@ function openDay(dayId) {
   currentDayId = dayId;
   const d = getDay(dayId);
   const s = document.getElementById('screen-routine');
-  // Group exercises by section
   const principal = d.exercises.filter(e=>e.sec==='principal');
   const core = d.exercises.filter(e=>e.sec==='core');
 
@@ -751,19 +753,18 @@ function openDay(dayId) {
       <div class="warmup-txt">${d.warmup}</div>
       <div class="warmup-note">${d.warmupNote}</div>
     </div>
-    ${core.length?`
-    <div class="section-divider"><span>Bloque core</span></div>
-    <div class="ex-list">${core.map(ex=>renderExCard(ex)).join('')}</div>
-    `:''}
     ${principal.length?`
-    <div class="section-divider"><span>Bloque principal</span></div>
+    <div class="section-divider"><span>Bloque principal (Tempo 4-1-1 o Isometrías)</span></div>
     <div class="ex-list">${principal.map(ex=>renderExCard(ex)).join('')}</div>
+    `:''}
+    ${core.length?`
+    <div class="section-divider"><span>Bloque core functional</span></div>
+    <div class="ex-list">${core.map(ex=>renderExCard(ex)).join('')}</div>
     `:''}
     <div class="pausa-box">
       ${d.pausas.map(p=>`<div class="pausa-item"><span class="pausa-val">${p.val}</span><span class="pausa-lbl">${p.lbl}</span></div>`).join('')}
     </div>`;
 
-  // Switch to routine screen without nav highlight change
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   s.classList.add('active');
   s.scrollTop = 0;
@@ -772,7 +773,7 @@ function openDay(dayId) {
 function renderExCard(ex) {
   const exLogs = logs[ex.id] || [];
   const lastLog = exLogs[exLogs.length-1];
-  const badgeTypes = {'Cuádriceps':'b-y','Glúteos':'b-g','Isquiotibiales':'b-g','Core':'b-y','Pecho':'b-y','Dorsal':'b-y','Hombros':'b-y','Gemelos':'b-g','Bíceps':'b-g','Tríceps':'b-g','Superserie':'b-o','Estabilidad LCA':'b-o','Equilibrio LCA':'b-o','Estabilidad rodilla':'b-o','Estabilidad':'b-o','Core antirotación':'b-y','Core lateral':'b-y','Core profundo':'b-y','Cadera':'b-o','Glúteo medio':'b-g','Deltoides lateral':'b-g','Coordinación':'b-o'};
+  const badgeTypes = {'Cuádriceps':'b-y','Glúteos':'b-g','Isquiotibiales':'b-g','Core':'b-y','Pecho':'b-y','Dorsal':'b-y','Hombros':'b-y','Gemelos':'b-g','Bíceps':'b-g','Tríceps':'b-g','Superserie':'b-o','Estabilidad LCA':'b-o','Equilibrio LCA':'b-o','Estabilidad rodilla':'b-o','Estabilidad':'b-o','Core antirotación':'b-y','Core lateral':'b-y','Core profundo':'b-y','Cadera':'b-o','Glúteo medio':'b-g','Deltoides':'b-g','Fútbol':'b-o','Rehabilitación LCA':'b-o','Core profundo':'b-y','Control':'b-y','Potencia':'b-o','Congestión':'b-o'};
   const badges = (ex.musculos||[]).map(m=>`<span class="badge ${badgeTypes[m]||'b-g'}">${m}</span>`).join('');
   const histHtml = exLogs.length>0
     ? `<div class="log-history">
@@ -815,16 +816,16 @@ function renderExCard(ex) {
           <div class="log-row">
             <div class="log-input-group">
               <label>Peso usado (kg)</label>
-              <input class="log-input" id="logPeso-${ex.id}" type="number" step="0.5" min="0" max="10" placeholder="ej. 8">
+              <input class="log-input" id="logPeso-'+ex.id+'" type="number" step="0.5" min="0" max="15" placeholder="ej. 5">
             </div>
             <div class="log-input-group">
               <label>Repeticiones hechas</label>
-              <input class="log-input" id="logReps-${ex.id}" type="number" min="1" max="50" placeholder="ej. 12">
+              <input class="log-input" id="logReps-'+ex.id+'" type="number" min="1" max="50" placeholder="ej. 12">
             </div>
           </div>
           <div class="log-input-group">
             <label>Nota libre</label>
-            <textarea class="log-note" id="logNota-${ex.id}" placeholder="ej. Me sentí bien, subir peso próxima vez..."></textarea>
+            <textarea class="log-note" id="logNota-'+ex.id+'" placeholder="ej. Buena congestión, dolió en la rep 12..."></textarea>
           </div>
           <button class="log-save-btn" onclick="saveLog('${ex.id}')">✓ Guardar registro</button>
         </div>
@@ -836,7 +837,7 @@ function renderExCard(ex) {
 
 function toggleCard(exId) {
   const card = document.getElementById('card-'+exId);
-  card.classList.toggle('open');
+  if(card) card.classList.toggle('open');
 }
 
 function saveLog(exId) {
@@ -852,9 +853,7 @@ function saveLog(exId) {
     ts: now.getTime()
   });
   saveLogs();
-  // Refresh card
   openDay(currentDayId);
-  // Re-open card
   setTimeout(()=>{ const c=document.getElementById('card-'+exId); if(c){c.classList.add('open'); c.scrollIntoView({behavior:'smooth',block:'nearest'}); } },50);
   showToast('✓ Registro guardado');
 }
@@ -889,7 +888,6 @@ function deleteLogFromHist(exId, idx, e) {
 let histFilter = 'all';
 function renderHistory() {
   const s = document.getElementById('screen-history');
-  // Build list of all exercises with logs
   const allExWithLogs = [];
   days.forEach(d=>{
     d.exercises.forEach(ex=>{
@@ -944,13 +942,8 @@ function renderHistory() {
     </div>`;
 }
 
-function setHistFilter(f, btn) {
-  histFilter = f;
-  renderHistory();
-}
-function toggleHCard(id) {
-  document.getElementById('hcard-'+id).classList.toggle('open');
-}
+function setHistFilter(f, btn) { histFilter = f; renderHistory(); }
+function toggleHCard(id) { document.getElementById('hcard-'+id).classList.toggle('open'); }
 
 // ═══════════════════════════════════════════
 // EDIT SCREEN
