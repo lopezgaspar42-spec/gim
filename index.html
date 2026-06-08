@@ -4,66 +4,1084 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#c8f135">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GymApp">
 <title>Mi Rutina de Gym</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── [SE MANTIENE TU CSS ORIGINAL EXACTAMENTE IGUAL] ── */
-:root { --bg: #0d0d0f; --surface: #17171a; --surface2: #1f1f23; --border: rgba(255,255,255,0.07); --accent: #c8f135; --accent-dim: rgba(200,241,53,0.12); --text: #f0ede6; --muted: #888880; --accent2: #4af0c4; }
+:root {
+  --bg: #0d0d0f;
+  --surface: #17171a;
+  --surface2: #1f1f23;
+  --surface3: #27272c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #c8f135;
+  --accent-dim: rgba(200,241,53,0.12);
+  --accent2: #4af0c4;
+  --accent2-dim: rgba(74,240,196,0.1);
+  --accent3: #f07840;
+  --accent3-dim: rgba(240,120,64,0.1);
+  --text: #f0ede6;
+  --muted: #888880;
+  --muted2: #55554f;
+  --red: #ff6b5b;
+  --red-dim: rgba(255,107,91,0.1);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; height: 100vh; }
-.screen { display: none; flex: 1; overflow-y: auto; }
-.screen.active { display: block; }
-.bottom-nav { flex-shrink: 0; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
-.nav-btn { flex: 1; padding: 10px; border: none; background: none; color: var(--muted); font-size: 10px; cursor: pointer; }
+html, body { height:100%; overflow:hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overscroll-behavior: none;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  flex-shrink: 0;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-bottom: calc(8px + var(--safe-bottom));
+  z-index: 100;
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 4px 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  transition: color 0.15s;
+  position: relative;
+}
+.nav-btn .nav-icon { font-size: 22px; line-height: 1; transition: transform 0.15s; }
 .nav-btn.active { color: var(--accent); }
-/* ... el resto de tu CSS permanece intacto ... */
+.nav-btn.active .nav-icon { transform: scale(1.1); }
+
+/* ── SCREENS ── */
+.screen { display: none; flex: 1; overflow-y: auto; overscroll-behavior: contain; }
+.screen.active { display: block; }
+
+/* ── HEADER ── */
+.app-header {
+  padding: 20px 18px 14px;
+  position: sticky; top: 0;
+  background: var(--bg);
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+}
+.app-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.app-header h2 span { color: var(--accent); }
+.header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+/* ── HOME SCREEN ── */
+.home-hero {
+  padding: 32px 18px 24px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(200,241,53,0.15) 0%, rgba(74,240,196,0.05) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 20px;
+}
+.home-hero::before {
+  content:'';
+  position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+  background: radial-gradient(circle, rgba(200,241,53,0.12) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(74,240,196,0.12) 0%, transparent 40%);
+  animation: bg-spin 15s linear infinite;
+  pointer-events:none;
+}
+@keyframes bg-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.home-hero-label { font-size: 10px; letter-spacing:.15em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:8px; display:inline-block; background:var(--accent-dim); padding:4px 10px; border-radius:100px; }
+.home-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 46px; line-height:1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.home-hero h1 span {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.home-hero-sub { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 8px; line-height:1.4; }
+
+.alert-card {
+  margin: 0 16px 16px;
+  background: var(--red-dim);
+  border: 1px solid rgba(255,107,91,0.25);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.alert-card .ai { font-size:16px; flex-shrink:0; }
+.alert-card p { font-size: 12px; color: #ffb3ab; line-height: 1.5; }
+
+.stats-row {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 12px; padding: 0 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 16px 8px; text-align:center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.stat-val { font-family:'Bebas Neue',sans-serif; font-size:26px; background:linear-gradient(90deg, #fff, var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; display:block; }
+.stat-lbl { font-size:10px; color:var(--muted); margin-top:4px; display:block; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; }
+
+/* DAY CARDS on home */
+.section-title {
+  padding: 0 18px;
+  font-size: 12px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+  color: var(--text); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 8px var(--accent);
+}
+.day-cards { display:flex; flex-direction:column; gap:12px; padding:0 16px; padding-bottom:24px; }
+.day-card {
+  background: linear-gradient(145deg, var(--surface), var(--surface2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex; align-items:center; gap:14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative; overflow: hidden;
+  border-left: 3px solid transparent;
+}
+.day-card:nth-child(1) { border-left-color: var(--accent); }
+.day-card:nth-child(2) { border-left-color: var(--accent2); }
+.day-card:nth-child(3) { border-left-color: var(--accent3); }
+.day-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  transform: translateX(-100%); transition: transform 0.4s;
+}
+.day-card:active::after { transform: translateX(100%); }
+.day-card:active { transform: scale(0.98); border-color: rgba(200,241,53,0.4); box-shadow: 0 2px 8px rgba(200,241,53,0.1); }
+.day-card-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:40px; line-height:1;
+  flex-shrink:0; width:40px;
+}
+.day-card:nth-child(1) .day-card-num { background: linear-gradient(135deg, var(--accent), #ffeb3b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.day-card:nth-child(2) .day-card-num { background: linear-gradient(135deg, var(--accent2), #00bcd4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.day-card:nth-child(3) .day-card-num { background: linear-gradient(135deg, var(--accent3), #ff9800); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.day-card-info { flex:1; }
+.day-card-title { font-size:16px; font-weight:600; margin-bottom:3px; }
+.day-card-sub { font-size:12px; color:var(--muted); line-height:1.3; }
+.day-card-count {
+  font-size:11px; background:var(--accent-dim); color:var(--accent);
+  padding:4px 10px; border-radius:100px; font-weight:600; flex-shrink:0;
+}
+.day-card-arrow { color:var(--muted2); font-size:18px; flex-shrink:0; }
+
+/* ── ROUTINE SCREEN ── */
+.routine-back {
+  display:flex; align-items:center; gap:8px;
+  padding: 14px 16px 10px;
+  position: sticky; top:0; background:var(--bg); z-index:50;
+  border-bottom: 1px solid var(--border);
+}
+.back-btn {
+  background:none; border:none; color:var(--accent);
+  font-size:14px; font-family:'DM Sans',sans-serif; font-weight:500;
+  cursor:pointer; display:flex; align-items:center; gap:4px;
+  padding:6px 0;
+}
+.routine-back h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:.04em; }
+
+.warmup-block {
+  margin: 14px 16px 0;
+  background: var(--accent2-dim);
+  border: 1px solid rgba(74,240,196,0.15);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.warmup-lbl { font-size:10px; font-weight:600; letter-spacing:.1em; color:var(--accent2); margin-bottom:4px; }
+.warmup-txt { font-size:13px; line-height:1.5; }
+.warmup-note { font-size:11px; color:var(--muted); margin-top:4px; }
+
+.section-divider {
+  display:flex; align-items:center; gap:10px;
+  padding: 18px 16px 10px;
+}
+.section-divider span {
+  font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); white-space:nowrap;
+}
+.section-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.ex-list { padding:0 16px; display:flex; flex-direction:column; gap:10px; }
+
+/* EXERCISE CARD */
+.ex-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:hidden;
+  transition: border-color 0.2s;
+}
+.ex-card.open { border-color: rgba(200,241,53,0.3); }
+.ex-card-header {
+  padding: 14px 14px 12px;
+  cursor:pointer;
+  position:relative;
+}
+.ex-card-header::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--accent); border-radius:3px 0 0 3px;
+  opacity:0; transition:opacity 0.2s;
+}
+.ex-card.open .ex-card-header::before { opacity:1; }
+.ex-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.ex-card-name { font-size:14px; font-weight:600; line-height:1.3; flex:1; }
+.ex-card-toggle {
+  width:26px; height:26px; border-radius:50%;
+  background:var(--surface2); display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; font-size:16px; color:var(--muted);
+  transition:transform 0.25s, color 0.2s;
+}
+.ex-card.open .ex-card-toggle { transform:rotate(45deg); color:var(--accent); }
+.ex-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; }
+.badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:100px; letter-spacing:.03em; }
+.b-y { background:var(--accent-dim); color:var(--accent); }
+.b-g { background:var(--accent2-dim); color:var(--accent2); }
+.b-o { background:var(--accent3-dim); color:var(--accent3); }
+
+.ex-card-body { display:none; }
+.ex-card.open .ex-card-body { display:block; }
+
+.ex-stats-grid {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:6px; padding:0 14px 12px;
+}
+.ex-stat-item { background:var(--surface2); border-radius:var(--radius-sm); padding:9px 10px; }
+.ex-stat-lbl { font-size:10px; color:var(--muted); margin-bottom:2px; }
+.ex-stat-val { font-size:13px; font-weight:600; }
+.ex-stat-val.acc { color:var(--accent); }
+
+.ex-tip {
+  margin:0 14px 12px;
+  padding:9px 11px;
+  background:rgba(200,241,53,0.04);
+  border-left:2px solid rgba(200,241,53,0.35);
+  border-radius:0 8px 8px 0;
+  font-size:12px; color:#c0bdb5; line-height:1.55;
+}
+.ex-tip strong { color:var(--accent); font-weight:600; }
+
+/* LOG SECTION inside card */
+.log-section {
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  background: var(--surface);
+}
+.log-title {
+  font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--accent2); margin-bottom:10px;
+}
+.log-inputs { display:flex; flex-direction:column; gap:8px; }
+.log-row { display:flex; gap:8px; }
+.log-input-group { flex:1; display:flex; flex-direction:column; gap:4px; }
+.log-input-group label { font-size:10px; color:var(--muted); font-weight:500; }
+.log-input {
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius-sm); padding:9px 10px;
+  color:var(--text); font-size:14px; font-family:'DM Sans',sans-serif;
+  width:100%; outline:none; transition:border-color 0.15s;
+  -webkit-appearance:none;
+}
+.log-input:focus { border-color: rgba(200,241,53,0.5); }
+.log-input::placeholder { color:var(--muted2); }
+.log-note {
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius-sm); padding:9px 10px;
+  color:var(--text); font-size:13px; font-family:'DM Sans',sans-serif;
+  width:100%; outline:none; resize:none; height:60px;
+  transition:border-color 0.15s; -webkit-appearance:none;
+}
+.log-note:focus { border-color: rgba(200,241,53,0.5); }
+.log-note::placeholder { color:var(--muted2); }
+.log-save-btn {
+  width:100%; margin-top:8px;
+  background:var(--accent); color:#0d0d0f;
+  border:none; border-radius:var(--radius-sm);
+  padding:11px; font-size:13px; font-weight:700;
+  font-family:'DM Sans',sans-serif; cursor:pointer;
+  transition:opacity 0.15s;
+}
+.log-save-btn:active { opacity:0.8; }
+
+.log-history { margin-top:10px; }
+.log-history-title {
+  font-size:10px; color:var(--muted); font-weight:500; text-transform:uppercase;
+  letter-spacing:.08em; margin-bottom:8px;
+}
+.log-entry {
+  background:var(--surface2); border-radius:var(--radius-sm);
+  padding:9px 10px; margin-bottom:6px;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
+}
+.log-entry-data { flex:1; }
+.log-entry-main { font-size:13px; font-weight:600; color:var(--text); }
+.log-entry-note { font-size:11px; color:var(--muted); margin-top:2px; line-height:1.3; }
+.log-entry-date { font-size:10px; color:var(--muted2); flex-shrink:0; }
+.log-entry-del {
+  background:none; border:none; color:var(--muted2);
+  font-size:14px; cursor:pointer; padding:2px 4px; flex-shrink:0;
+}
+.log-empty { font-size:12px; color:var(--muted2); text-align:center; padding:8px 0; }
+
+/* pausa box */
+.pausa-box {
+  display:flex; background:var(--surface);
+  border:1px solid var(--border); border-radius:var(--radius);
+  margin:16px 16px 24px; overflow:hidden;
+}
+.pausa-item { flex:1; text-align:center; padding:14px 8px; }
+.pausa-item + .pausa-item { border-left:1px solid var(--border); }
+.pausa-val { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--accent2); display:block; line-height:1; }
+.pausa-lbl { font-size:10px; color:var(--muted); margin-top:4px; display:block; line-height:1.3; }
+
+/* ── HISTORY SCREEN ── */
+.hist-day-filter {
+  display:flex; gap:6px; padding:12px 16px;
+  overflow-x:auto; scrollbar-width:none;
+}
+.hist-day-filter::-webkit-scrollbar { display:none; }
+.filter-btn {
+  flex-shrink:0; padding:7px 14px; border-radius:100px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--muted); font-size:12px; font-weight:500;
+  cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s;
+}
+.filter-btn.active { background:var(--accent); color:#0d0d0f; border-color:var(--accent); font-weight:600; }
+
+.hist-list { padding:0 16px 24px; display:flex; flex-direction:column; gap:10px; }
+.hist-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden;
+}
+.hist-card-header {
+  padding:12px 14px;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
+  cursor:pointer;
+}
+.hist-card-name { font-size:14px; font-weight:600; flex:1; line-height:1.3; }
+.hist-card-meta { font-size:11px; color:var(--muted); display:flex; flex-direction:column; align-items:flex-end; gap:2px; flex-shrink:0; }
+.hist-card-count { color:var(--accent); font-weight:600; font-size:12px; }
+.hist-entries { display:none; border-top:1px solid var(--border); }
+.hist-card.open .hist-entries { display:block; }
+.hist-entry-row {
+  padding:10px 14px; border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
+}
+.hist-entry-row:last-child { border-bottom:none; }
+.hist-entry-main { font-size:13px; font-weight:500; }
+.hist-entry-note { font-size:11px; color:var(--muted); margin-top:2px; }
+.hist-entry-date { font-size:10px; color:var(--muted2); flex-shrink:0; }
+.hist-empty { text-align:center; padding:40px 20px; color:var(--muted); font-size:14px; }
+.hist-empty span { font-size:32px; display:block; margin-bottom:10px; }
+
+/* ── EDIT SCREEN ── */
+.edit-day-tabs {
+  display:flex; gap:6px; padding:10px 16px;
+  overflow-x:auto; scrollbar-width:none; border-bottom:1px solid var(--border);
+}
+.edit-day-tabs::-webkit-scrollbar { display:none; }
+.edit-tab {
+  flex-shrink:0; padding:8px 14px; border-radius:100px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--muted); font-size:12px; font-weight:500;
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+}
+.edit-tab.active { background:var(--accent); color:#0d0d0f; border-color:var(--accent); font-weight:600; }
+
+.edit-list { padding:12px 16px; display:flex; flex-direction:column; gap:8px; }
+.edit-ex-row {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:12px 14px;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.edit-ex-info { flex:1; cursor:pointer; }
+.edit-ex-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+.edit-ex-detail { font-size:12px; color:var(--muted); }
+.edit-ex-actions { display:flex; gap:6px; flex-shrink:0; }
+.edit-btn {
+  background:var(--surface2); border:none; border-radius:var(--radius-sm);
+  padding:7px 10px; font-size:12px; cursor:pointer; color:var(--text);
+  font-family:'DM Sans',sans-serif;
+}
+.edit-btn.del { color:var(--red); }
+
+.add-ex-btn {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--accent-dim); border:1px dashed rgba(200,241,53,0.3);
+  border-radius:var(--radius); padding:14px;
+  color:var(--accent); font-size:14px; font-weight:600;
+  cursor:pointer; margin:0 16px; font-family:'DM Sans',sans-serif;
+  transition:background 0.15s;
+}
+.add-ex-btn:active { background:rgba(200,241,53,0.2); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.7); align-items:flex-end; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal-sheet {
+  background:var(--surface);
+  border-radius:24px 24px 0 0;
+  width:100%; max-height:90vh;
+  overflow-y:auto; padding:20px 20px calc(20px + var(--safe-bottom));
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.modal-handle { width:36px; height:4px; background:var(--border2); border-radius:2px; margin:0 auto 20px; }
+.modal-title { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:.03em; margin-bottom:18px; }
+.modal-title span { color:var(--accent); }
+.field-group { margin-bottom:14px; }
+.field-label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; display:block; }
+.field-input {
+  width:100%; background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius-sm); padding:11px 12px;
+  color:var(--text); font-size:14px; font-family:'DM Sans',sans-serif;
+  outline:none; -webkit-appearance:none; transition:border-color 0.15s;
+}
+.field-input:focus { border-color:rgba(200,241,53,0.5); }
+.field-row { display:flex; gap:10px; }
+.field-row .field-group { flex:1; }
+.modal-actions { display:flex; gap:10px; margin-top:6px; }
+.btn-primary {
+  flex:1; background:var(--accent); color:#0d0d0f;
+  border:none; border-radius:var(--radius-sm); padding:13px;
+  font-size:14px; font-weight:700; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-secondary {
+  flex:1; background:var(--surface2); color:var(--text);
+  border:none; border-radius:var(--radius-sm); padding:13px;
+  font-size:14px; font-weight:500; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--surface3); border:1px solid var(--border2);
+  border-radius:100px; padding:10px 20px;
+  font-size:13px; font-weight:500; color:var(--text);
+  z-index:300; opacity:0; transition:all 0.25s; pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── INSTALL BANNER ── */
+.install-banner {
+  display:none;
+  background:linear-gradient(135deg, rgba(200,241,53,0.12), rgba(74,240,196,0.08));
+  border:1px solid rgba(200,241,53,0.25);
+  border-radius:var(--radius); margin:0 16px 16px;
+  padding:14px; align-items:center; gap:12px;
+}
+.install-banner.show { display:flex; }
+.install-banner-text { flex:1; font-size:13px; line-height:1.4; }
+.install-banner-text strong { color:var(--accent); display:block; margin-bottom:2px; }
+.install-banner-text span { color:var(--muted); font-size:12px; }
+.install-btn {
+  background:var(--accent); color:#0d0d0f;
+  border:none; border-radius:var(--radius-sm); padding:9px 16px;
+  font-size:13px; font-weight:700; cursor:pointer;
+  font-family:'DM Sans',sans-serif; flex-shrink:0;
+}
 </style>
 </head>
 <body>
+
+<!-- SCREENS -->
+<div id="screen-home" class="screen active"></div>
+<div id="screen-routine" class="screen"></div>
+<div id="screen-history" class="screen"></div>
+<div id="screen-edit" class="screen"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-screen="home" onclick="navigate('home',this)">
+    <span class="nav-icon">🏠</span>Inicio
+  </button>
+  <button class="nav-btn" data-screen="history" onclick="navigate('history',this)">
+    <span class="nav-icon">📊</span>Historial
+  </button>
+  <button class="nav-btn" data-screen="edit" onclick="navigate('edit',this)">
+    <span class="nav-icon">✏️</span>Editar
+  </button>
+</nav>
+
+<!-- MODAL EXERCISE EDIT/ADD -->
+<div class="modal-overlay" id="exModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="exModalTitle">Nuevo <span>Ejercicio</span></div>
+    <div class="field-group">
+      <label class="field-label">Nombre del ejercicio</label>
+      <input class="field-input" id="exName" placeholder="ej. Sentadilla goblet" type="text">
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Series</label>
+        <input class="field-input" id="exSeries" placeholder="3" type="text">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Repeticiones</label>
+        <input class="field-input" id="exReps" placeholder="12–15" type="text">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Carga máx.</label>
+        <input class="field-input" id="exCarga" placeholder="≤ 10 kg" type="text">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Pausa entre series</label>
+        <input class="field-input" id="exPausa" placeholder="90 seg" type="text">
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Músculos (separados por coma)</label>
+      <input class="field-input" id="exMusculos" placeholder="Cuádriceps, Glúteos" type="text">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Consejo / Técnica</label>
+      <input class="field-input" id="exTip" placeholder="Descripción breve de la técnica" type="text">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Sección</label>
+      <select class="field-input" id="exSeccion">
+        <option value="principal">Bloque principal</option>
+        <option value="core">Bloque core</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveExercise()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
 // ═══════════════════════════════════════════
-// DATA ACTUALIZADA
+// DATA
 // ═══════════════════════════════════════════
 const DEFAULT_DAYS = [
   {
-    id:'d1', title:'Piernas A', sub:'Fuerza y estabilidad · Isometría de rodilla',
-    warmup:'Bicicleta estática o caminata', warmupNote:'8 min · 50% esfuerzo.',
-    pausas:[{val:'90"',lbl:'Piernas'},{val:'60"',lbl:'Core'},{val:'2\'',lbl:'Total'}],
+    id:'d1', title:'Piernas A', sub:'Fuerza y estabilidad de rodilla · Cuádriceps, isquiotibiales y glúteos',
+    warmup:'Bicicleta estática o caminata en cinta con inclinación',
+    warmupNote:'50–60% esfuerzo. Activar circulación sin estrés articular.',
+    pausas:[{val:'90"',lbl:'Piernas entre series'},{val:'60"',lbl:'Core entre series'},{val:'2–3\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d1e0',name:'ACTIVACIÓN: Wall Sit + Split',sec:'principal',series:'3 series',reps:'30" Wall Sit / 20" Split',carga:'Sin peso',pausa:'60 seg',musculos:['Estabilidad rodilla'],tip:'Wall sit: busca firmeza total. Split sostenido: mantén la rodilla firme sin temblor.'},
-      {id:'d1e1',name:'Sentadilla Búlgara Deficitaria',sec:'principal',series:'3 series',reps:'10-12 reps',carga:'6kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Glúteos'],tip:'Pausa 2" abajo. Si la rodilla pierde firmeza, quita el disco inmediatamente.'},
-      {id:'d1e2',name:'Peso Muerto Rumano (Tradicional)',sec:'principal',series:'3 series',reps:'12 reps',carga:'≤ 10 kg',pausa:'90 seg',musculos:['Isquiotibiales','Glúteos'],tip:'Pies paralelos. Clava talones al suelo. Espalda neutra. ¡Más estabilidad!'},
-      {id:'d1e5',name:'Elevación de pantorrillas',sec:'principal',series:'3 series',reps:'15-20 reps',carga:'Corporal',pausa:'60 seg',musculos:['Gemelos'],tip:'Lento y controlado.'},
-      {id:'d1e6',name:'Pallof press',sec:'core',series:'3 series',reps:'12 reps',carga:'Banda',pausa:'60 seg',musculos:['Core'],tip:'Resiste la rotación.'}
+      {id:'d1e1',name:'Sentadilla goblet con mancuerna',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 10 kg',pausa:'90 seg',musculos:['Cuádriceps','Glúteos'],tip:'Bajá hasta 90° o donde toleres sin dolor. <strong>Rodilla alineada con el pie</strong>, no adentro. Espalda recta.'},
+      {id:'d1e2',name:'Estocada búlgara con mancuernas',sec:'principal',series:'3 series',reps:'8–10 reps c/pierna',carga:'≤ 4 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Glúteos','Estabilidad LCA'],tip:'Pie trasero apoyado en banco. <strong>Bajá lento (3 seg)</strong>, rodilla delantera alineada con el pie. Comenzá sin peso para dominar el equilibrio.'},
+      {id:'d1e3',name:'Peso muerto rumano con mancuernas',sec:'principal',series:'3 series',reps:'10–12 reps',carga:'≤ 10 kg total',pausa:'90 seg',musculos:['Isquiotibiales','Glúteos'],tip:'<strong>Espalda recta, bisagra de cadera.</strong> Bajá hasta sentir estiramiento de isquiotibiales. Sin flexionar rodillas de más.'},
+      {id:'d1e4',name:'Step-up con mancuerna (cajón bajo)',sec:'principal',series:'3 series',reps:'10 reps c/pierna',carga:'≤ 5 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Equilibrio LCA'],tip:'Cajón a <strong>20–30 cm</strong>. Activa estabilizadores sin cizalla. Comenzá sin peso si es necesario.'},
+      {id:'d1e5',name:'Elevación de pantorrillas de pie',sec:'principal',series:'3 series',reps:'15–20 reps',carga:'Peso corporal',pausa:'60 seg',musculos:['Gemelos'],tip:'Fundamental para el fútbol. <strong>Movimiento lento y controlado</strong>, especialmente en la bajada (3 seg).'},
+      {id:'d1e6',name:'Pallof press con banda elástica',sec:'core',series:'3 series',reps:'10–12 reps c/lado',carga:'Banda liviana',pausa:'60 seg',musculos:['Core antirotación','Estabilidad'],tip:'Anclar la banda a la altura del pecho. Empujá con ambas manos al frente y <strong>resistí la rotación</strong>. Clave para el fútbol.'},
     ]
   },
   {
-    id:'d2', title:'Tren Superior', sub:'Control y técnica · Sin tensión en cuello',
-    warmup:'Movilidad de hombros y escápulas', warmupNote:'Activación suave.',
-    pausas:[{val:'90"',lbl:'Superior'},{val:'60"',lbl:'Core'},{val:'2\'',lbl:'Total'}],
+    id:'d2', title:'Tren Superior', sub:'Pecho, espalda, hombros y brazos · Cargas controladas ≤ 10 kg',
+    warmup:'Remo en máquina o banda elástica liviana + movilidad de hombros (círculos, rotaciones)',
+    warmupNote:'Activar escápulas y dorsal. Intensidad baja.',
+    pausas:[{val:'90"',lbl:'Tren sup. entre series'},{val:'60"',lbl:'Core entre series'},{val:'2\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d2e0',name:'ACTIVACIÓN: Plancha Frontal',sec:'principal',series:'3 series',reps:'30 seg',carga:'Corporal',pausa:'60 seg',musculos:['Core'],tip:'Estabiliza antes de cargar peso.'},
-      {id:'d2e1',name:'Flexiones de brazos',sec:'principal',series:'3 series',reps:'Al fallo',carga:'Corporal',pausa:'90 seg',musculos:['Pecho'],tip:'Exhala al subir.'}
-      /* (Mantén aquí el resto de tus ejercicios del día 2) */
+      {id:'d2e1',name:'Flexiones de brazos',sec:'principal',series:'3 series',reps:'Al fallo o 15 máx',carga:'Peso corporal',pausa:'90 seg',musculos:['Pecho','Tríceps','Core'],tip:'<strong>Exhalar al subir.</strong> Cuerpo en línea recta, sin dejar caer la cadera. Si es muy difícil, hacelas con rodillas apoyadas.'},
+      {id:'d2e2',name:'Remo con mancuerna a una mano',sec:'principal',series:'3 series',reps:'12 reps c/lado',carga:'≤ 8 kg',pausa:'90 seg',musculos:['Dorsal','Bíceps'],tip:'Apoyo en banco. <strong>Codo cerca del cuerpo.</strong> No rotar el torso en exceso. Bajá el peso con control (3 seg).'},
+      {id:'d2e3',name:'Press militar con mancuernas sentado',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 5 kg c/mano',pausa:'90 seg',musculos:['Hombros','Tríceps'],tip:'Sentado <strong>con respaldo</strong> para no comprometer la espalda baja. Exhalar al empujar hacia arriba.'},
+      {id:'d2e4',name:'Curl bíceps + Extensión tríceps (superserie)',sec:'principal',series:'3 series',reps:'12 reps c/ejercicio',carga:'≤ 5 kg c/mano',pausa:'90 seg entre superseries',musculos:['Bíceps','Tríceps','Superserie'],tip:'<strong>Superserie:</strong> 12 curl de bíceps y sin descanso 12 extensiones de tríceps sobre la cabeza. Codos fijos al cuerpo en el curl.'},
+      {id:'d2e5',name:'Vuelos laterales con mancuernas',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'≤ 4 kg c/mano',pausa:'60 seg',musculos:['Hombros','Deltoides lateral'],tip:'<strong>Codos ligeramente flexionados</strong>, subí hasta altura de hombros — no más. Bajá lento (3 seg). Usá menos peso del que creés.'},
+      {id:'d2e6',name:'Dead bug (bicho muerto)',sec:'core',series:'3 series',reps:'8–10 reps c/lado',carga:'Peso corporal',pausa:'60 seg',musculos:['Core profundo','Coordinación'],tip:'Acostado boca arriba, rodillas a 90°. Extendé brazo y pierna opuestos <strong>sin despegar la espalda baja del piso.</strong>'},
     ]
   },
   {
-    id:'d3', title:'Piernas B + Core', sub:'Rehab Isquios + Fuerza funcional',
-    warmup:'Movilidad cadera', warmupNote:'8 min.',
-    pausas:[{val:'90"',lbl:'Piernas'},{val:'60"',lbl:'Core'},{val:'2\'',lbl:'Total'}],
+    id:'d3', title:'Piernas B + Core', sub:'Potencia de glúteo, estabilidad rodilla y core funcional para el fútbol',
+    warmup:'Trote suave o elíptica + movilidad de cadera (círculos, peso muerto a 1 pierna sin carga)',
+    warmupNote:'Activar cadena posterior antes de trabajar glúteos e isquios.',
+    pausas:[{val:'90"',lbl:'Piernas entre series'},{val:'60"',lbl:'Core entre series'},{val:'2–3\'',lbl:'Entre ejercicios'}],
     exercises:[
-      {id:'d3e0',name:'REHAB: Puente + Heel Slams',sec:'principal',series:'3 series',reps:'10 c/u',carga:'Corporal',pausa:'60 seg',musculos:['Isquiotibiales'],tip:'Puente: acercar pelota. Slams: golpe seco con talón.'},
-      {id:'d3e1',name:'Hip thrust',sec:'principal',series:'4 series',reps:'15 reps',carga:'≤ 10 kg',pausa:'90 seg',musculos:['Glúteos'],tip:'Apreta en la cima.'},
-      {id:'d3e3',name:'Curl Femoral',sec:'principal',series:'3 series',reps:'12-15 reps',carga:'Ligera',pausa:'90 seg',musculos:['Isquiotibiales'],tip:'Movimiento controlado sin rebote.'},
-      {id:'d3e5',name:'Core Completo',sec:'core',series:'3 series',reps:'Varios',carga:'Corporal',pausa:'60 seg',musculos:['Core'],tip:'Mantener firmeza.'}
+      {id:'d3e1',name:'Hip thrust (peso corporal o mancuerna)',sec:'principal',series:'4 series',reps:'15 reps',carga:'≤ 10 kg sobre cadera',pausa:'90 seg',musculos:['Glúteos','Isquiotibiales'],tip:'Clave para el fútbol: activa el glúteo mayor <strong>sin cargar la rodilla.</strong> Hombros en banco, rodillas a 90°. Apretá glúteo en la cima.'},
+      {id:'d3e2',name:'Zancada estática con mancuernas',sec:'principal',series:'3 series',reps:'10 reps c/pierna',carga:'≤ 4 kg c/mano',pausa:'90 seg',musculos:['Cuádriceps','Glúteos','Estabilidad LCA'],tip:'<strong>Estática primero</strong> (sin desplazamiento) para menor estrés en el LCA. Torso erguido, rodilla delantera no supera la punta del pie.'},
+      {id:'d3e3',name:'Curl femoral (máquina o mancuerna)',sec:'principal',series:'3 series',reps:'12–15 reps',carga:'Ligera, sin dolor',pausa:'90 seg',musculos:['Isquiotibiales'],tip:'Fundamental post-LCA: fortalecer el isquiotibial <strong>equilibra la tensión</strong> sobre el ligamento. Movimiento suave, sin rebote.'},
+      {id:'d3e4',name:'Abducción de cadera (máquina o banda)',sec:'principal',series:'3 series',reps:'15–20 reps',carga:'Moderada',pausa:'60 seg',musculos:['Glúteo medio','Estabilidad rodilla'],tip:'El glúteo medio <strong>previene el valgo de rodilla</strong> al correr y patear. Imprescindible en rehabilitación de LCA.'},
+      {id:'d3e5',name:'Plancha frontal isométrica',sec:'core',series:'3 series',reps:'20–40 seg',carga:'Peso corporal',pausa:'60 seg',musculos:['Core'],tip:'<strong>Respiración continua</strong> — nunca retener el aliento. Cuerpo en línea recta. No dejar caer la cadera.'},
+      {id:'d3e6',name:'Plancha lateral (cada lado)',sec:'core',series:'3 series c/lado',reps:'20–30 seg',carga:'Peso corporal',pausa:'60 seg',musculos:['Core lateral','Cadera'],tip:'Fortalece el core lateral, crucial para los <strong>cambios de dirección</strong> en el fútbol. Cadera arriba, sin dejarla caer.'},
+      {id:'d3e7',name:'Dead bug (brazo y pierna opuestos)',sec:'core',series:'3 series',reps:'8–10 reps c/lado',carga:'Peso corporal',pausa:'60 seg',musculos:['Core profundo'],tip:'Bajo esfuerzo cardiovascular — ideal para cardíacos. Activa el transverso abdominal. <strong>Espalda baja siempre pegada al piso.</strong>'},
     ]
   }
 ];
 
 // ═══════════════════════════════════════════
-// (El resto de tu JS de funciones y navegación es el mismo)
+// STATE
 // ═══════════════════════════════════════════
+let days = JSON.parse(localStorage.getItem('gymDays') || 'null') || DEFAULT_DAYS;
+let logs = JSON.parse(localStorage.getItem('gymLogs') || '{}'); // {exId: [{date,peso,reps,nota}]}
+let currentDayId = null;
+let editingDayId = 'd1';
+let editingExIdx = null;
+let deferredInstall = null;
+
+function saveDays() { localStorage.setItem('gymDays', JSON.stringify(days)); }
+function saveLogs() { localStorage.setItem('gymLogs', JSON.stringify(logs)); }
+function getDay(id) { return days.find(d=>d.id===id); }
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function navigate(screen, btn) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+screen).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(screen==='home') renderHome();
+  if(screen==='history') renderHistory();
+  if(screen==='edit') renderEdit();
+}
+
+// ═══════════════════════════════════════════
+// HOME SCREEN
+// ═══════════════════════════════════════════
+function renderHome() {
+  const s = document.getElementById('screen-home');
+  const totalLogs = Object.values(logs).reduce((a,b)=>a+b.length,0);
+  s.innerHTML = `
+    <div class="home-hero">
+      <div class="home-hero-label">Rutina personalizada</div>
+      <h1>MI <span>RUTINA</span><br>DE GYM</h1>
+      <div class="home-hero-sub">CIV sin shunt residual · Post-LCA · Fútbol</div>
+    </div>
+    <div id="installBanner" class="install-banner">
+      <div class="install-banner-text">
+        <strong>📲 Instalar como app</strong>
+        <span>Accedé sin internet desde tu pantalla de inicio</span>
+      </div>
+      <button class="install-btn" onclick="installApp()">Instalar</button>
+    </div>
+    <div class="alert-card">
+      <div class="ai">⚠️</div>
+      <p>Adaptada para <strong>CIV sin shunt residual</strong> y <strong>post-LCA</strong>. Carga máx. 10 kg. Exhalar siempre al hacer fuerza.</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><span class="stat-val">3</span><span class="stat-lbl">Días / sem.</span></div>
+      <div class="stat-card"><span class="stat-val">10<small style="font-size:14px">kg</small></span><span class="stat-lbl">Carga máx.</span></div>
+      <div class="stat-card"><span class="stat-val">${totalLogs}</span><span class="stat-lbl">Registros</span></div>
+    </div>
+    <div class="section-title">SELECCIONÁ TU DÍA</div>
+    <div class="day-cards">
+      ${days.map((d,i)=>{
+        const exCount = d.exercises.length;
+        const logCount = d.exercises.reduce((a,ex)=>a+(logs[ex.id]?.length||0),0);
+        return `<div class="day-card" onclick="openDay('${d.id}')">
+          <div class="day-card-num">${i+1}</div>
+          <div class="day-card-info">
+            <div class="day-card-title">${d.title}</div>
+            <div class="day-card-sub">${d.sub}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+            <span class="day-card-count">${exCount} ej.</span>
+            ${logCount>0?`<span style="font-size:10px;color:var(--muted)">📝 ${logCount} reg.</span>`:''}
+          </div>
+          <div class="day-card-arrow">›</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  // Show install banner if available
+  if(deferredInstall) document.getElementById('installBanner').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+// DAY / ROUTINE SCREEN
+// ═══════════════════════════════════════════
+function openDay(dayId) {
+  currentDayId = dayId;
+  const d = getDay(dayId);
+  const s = document.getElementById('screen-routine');
+  // Group exercises by section
+  const principal = d.exercises.filter(e=>e.sec==='principal');
+  const core = d.exercises.filter(e=>e.sec==='core');
+
+  s.innerHTML = `
+    <div class="routine-back">
+      <button class="back-btn" onclick="navigate('home',document.querySelector('[data-screen=home]'))">‹ Inicio</button>
+      <h3>${d.title}</h3>
+    </div>
+    <div class="warmup-block" style="margin-bottom:4px">
+      <div class="warmup-lbl">🚴 Entrada en calor — 8 min</div>
+      <div class="warmup-txt">${d.warmup}</div>
+      <div class="warmup-note">${d.warmupNote}</div>
+    </div>
+    ${core.length?`
+    <div class="section-divider"><span>Bloque core</span></div>
+    <div class="ex-list">${core.map(ex=>renderExCard(ex)).join('')}</div>
+    `:''}
+    ${principal.length?`
+    <div class="section-divider"><span>Bloque principal</span></div>
+    <div class="ex-list">${principal.map(ex=>renderExCard(ex)).join('')}</div>
+    `:''}
+    <div class="pausa-box">
+      ${d.pausas.map(p=>`<div class="pausa-item"><span class="pausa-val">${p.val}</span><span class="pausa-lbl">${p.lbl}</span></div>`).join('')}
+    </div>`;
+
+  // Switch to routine screen without nav highlight change
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  s.classList.add('active');
+  s.scrollTop = 0;
+}
+
+function renderExCard(ex) {
+  const exLogs = logs[ex.id] || [];
+  const lastLog = exLogs[exLogs.length-1];
+  const badgeTypes = {'Cuádriceps':'b-y','Glúteos':'b-g','Isquiotibiales':'b-g','Core':'b-y','Pecho':'b-y','Dorsal':'b-y','Hombros':'b-y','Gemelos':'b-g','Bíceps':'b-g','Tríceps':'b-g','Superserie':'b-o','Estabilidad LCA':'b-o','Equilibrio LCA':'b-o','Estabilidad rodilla':'b-o','Estabilidad':'b-o','Core antirotación':'b-y','Core lateral':'b-y','Core profundo':'b-y','Cadera':'b-o','Glúteo medio':'b-g','Deltoides lateral':'b-g','Coordinación':'b-o'};
+  const badges = (ex.musculos||[]).map(m=>`<span class="badge ${badgeTypes[m]||'b-g'}">${m}</span>`).join('');
+  const histHtml = exLogs.length>0
+    ? `<div class="log-history">
+        <div class="log-history-title">Historial reciente</div>
+        ${exLogs.slice().reverse().slice(0,3).map((l,i)=>{
+          const realIdx = exLogs.length-1-i;
+          return `<div class="log-entry">
+            <div class="log-entry-data">
+              <div class="log-entry-main">${l.peso?`${l.peso} kg`:'Sin peso'} · ${l.reps||'—'} reps</div>
+              ${l.nota?`<div class="log-entry-note">${l.nota}</div>`:''}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+              <div class="log-entry-date">${l.date}</div>
+              <button class="log-entry-del" onclick="deleteLog('${ex.id}',${realIdx},event)">✕</button>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`
+    : `<div class="log-empty">Todavía no hay registros</div>`;
+
+  return `<div class="ex-card" id="card-${ex.id}">
+    <div class="ex-card-header" onclick="toggleCard('${ex.id}')">
+      <div class="ex-card-top">
+        <div class="ex-card-name">${ex.name}${lastLog?` <span style="font-size:11px;color:var(--accent);font-weight:500">· ${lastLog.peso?lastLog.peso+' kg':'—'} · ${lastLog.reps?lastLog.reps+' reps':'—'}</span>`:''}</div>
+        <div class="ex-card-toggle">+</div>
+      </div>
+      <div class="ex-badges">${badges}</div>
+    </div>
+    <div class="ex-card-body">
+      <div class="ex-stats-grid">
+        <div class="ex-stat-item"><div class="ex-stat-lbl">Series</div><div class="ex-stat-val acc">${ex.series}</div></div>
+        <div class="ex-stat-item"><div class="ex-stat-lbl">Repeticiones</div><div class="ex-stat-val acc">${ex.reps}</div></div>
+        <div class="ex-stat-item"><div class="ex-stat-lbl">Carga máxima</div><div class="ex-stat-val">${ex.carga}</div></div>
+        <div class="ex-stat-item"><div class="ex-stat-lbl">Pausa entre series</div><div class="ex-stat-val">${ex.pausa}</div></div>
+      </div>
+      <div class="ex-tip">${ex.tip}</div>
+      <div class="log-section">
+        <div class="log-title">📝 Registrar sesión</div>
+        <div class="log-inputs">
+          <div class="log-row">
+            <div class="log-input-group">
+              <label>Peso usado (kg)</label>
+              <input class="log-input" id="logPeso-${ex.id}" type="number" step="0.5" min="0" max="10" placeholder="ej. 8">
+            </div>
+            <div class="log-input-group">
+              <label>Repeticiones hechas</label>
+              <input class="log-input" id="logReps-${ex.id}" type="number" min="1" max="50" placeholder="ej. 12">
+            </div>
+          </div>
+          <div class="log-input-group">
+            <label>Nota libre</label>
+            <textarea class="log-note" id="logNota-${ex.id}" placeholder="ej. Me sentí bien, subir peso próxima vez..."></textarea>
+          </div>
+          <button class="log-save-btn" onclick="saveLog('${ex.id}')">✓ Guardar registro</button>
+        </div>
+        ${histHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleCard(exId) {
+  const card = document.getElementById('card-'+exId);
+  card.classList.toggle('open');
+}
+
+function saveLog(exId) {
+  const peso = document.getElementById('logPeso-'+exId).value.trim();
+  const reps = document.getElementById('logReps-'+exId).value.trim();
+  const nota = document.getElementById('logNota-'+exId).value.trim();
+  if(!peso && !reps && !nota) { showToast('Completá al menos un campo'); return; }
+  if(!logs[exId]) logs[exId]=[];
+  const now = new Date();
+  logs[exId].push({
+    date: now.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}),
+    peso, reps, nota,
+    ts: now.getTime()
+  });
+  saveLogs();
+  // Refresh card
+  openDay(currentDayId);
+  // Re-open card
+  setTimeout(()=>{ const c=document.getElementById('card-'+exId); if(c){c.classList.add('open'); c.scrollIntoView({behavior:'smooth',block:'nearest'}); } },50);
+  showToast('✓ Registro guardado');
+}
+
+function deleteLog(exId, idx, e) {
+  e.stopPropagation();
+  if(!logs[exId]) return;
+  if(!confirm('¿Eliminar este registro?')) return;
+  logs[exId].splice(idx,1);
+  if(logs[exId].length===0) delete logs[exId];
+  saveLogs();
+  openDay(currentDayId);
+  setTimeout(()=>{ const c=document.getElementById('card-'+exId); if(c) c.classList.add('open'); },50);
+  showToast('Registro eliminado');
+}
+
+function deleteLogFromHist(exId, idx, e) {
+  e.stopPropagation();
+  if(!logs[exId]) return;
+  if(!confirm('¿Eliminar este registro del historial?')) return;
+  logs[exId].splice(idx,1);
+  if(logs[exId].length===0) delete logs[exId];
+  saveLogs();
+  renderHistory();
+  setTimeout(()=>{ const hc=document.getElementById('hcard-'+exId); if(hc) hc.classList.add('open'); },50);
+  showToast('Registro eliminado');
+}
+
+// ═══════════════════════════════════════════
+// HISTORY SCREEN
+// ═══════════════════════════════════════════
+let histFilter = 'all';
+function renderHistory() {
+  const s = document.getElementById('screen-history');
+  // Build list of all exercises with logs
+  const allExWithLogs = [];
+  days.forEach(d=>{
+    d.exercises.forEach(ex=>{
+      const exLogs = logs[ex.id]||[];
+      if(exLogs.length>0) allExWithLogs.push({ex, day:d, logs:exLogs});
+    });
+  });
+
+  const filtered = histFilter==='all' ? allExWithLogs : allExWithLogs.filter(e=>e.day.id===histFilter);
+
+  s.innerHTML = `
+    <div class="app-header">
+      <h2>HISTO<span>RIAL</span></h2>
+      <div class="header-sub">Todos tus registros de pesos y series</div>
+    </div>
+    <div class="hist-day-filter">
+      <button class="filter-btn ${histFilter==='all'?'active':''}" onclick="setHistFilter('all',this)">Todos</button>
+      ${days.map(d=>`<button class="filter-btn ${histFilter===d.id?'active':''}" onclick="setHistFilter('${d.id}',this)">${d.title}</button>`).join('')}
+    </div>
+    <div class="hist-list">
+      ${filtered.length===0
+        ? `<div class="hist-empty"><span>📋</span>Todavía no hay registros${histFilter!=='all'?' para este día':''}.<br>Abrí un ejercicio y guardá tu primera sesión.</div>`
+        : filtered.map(({ex,day,logs:exLogs})=>`
+          <div class="hist-card" id="hcard-${ex.id}">
+            <div class="hist-card-header" onclick="toggleHCard('${ex.id}')">
+              <div>
+                <div class="hist-card-name">${ex.name}</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">${day.title}</div>
+              </div>
+              <div class="hist-card-meta">
+                <span class="hist-card-count">${exLogs.length} reg.</span>
+                <span>${exLogs[exLogs.length-1]?.date||''}</span>
+              </div>
+            </div>
+            <div class="hist-entries">
+              ${exLogs.slice().reverse().map((l, i)=>{
+                const realIdx = exLogs.length - 1 - i;
+                return `
+                <div class="hist-entry-row">
+                  <div>
+                    <div class="hist-entry-main">${l.peso?`${l.peso} kg`:'Sin peso'} · ${l.reps?l.reps+' reps':'—'}</div>
+                    ${l.nota?`<div class="hist-entry-note">${l.nota}</div>`:''}
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+                    <div class="hist-entry-date">${l.date}</div>
+                    <button class="log-entry-del" onclick="deleteLogFromHist('${ex.id}',${realIdx},event)">✕</button>
+                  </div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>`).join('')}
+    </div>`;
+}
+
+function setHistFilter(f, btn) {
+  histFilter = f;
+  renderHistory();
+}
+function toggleHCard(id) {
+  document.getElementById('hcard-'+id).classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════
+// EDIT SCREEN
+// ═══════════════════════════════════════════
+function renderEdit() {
+  const s = document.getElementById('screen-edit');
+  const d = getDay(editingDayId);
+  s.innerHTML = `
+    <div class="app-header">
+      <h2>EDI<span>TAR</span></h2>
+      <div class="header-sub">Modificá ejercicios, series y cargas</div>
+    </div>
+    <div class="edit-day-tabs">
+      ${days.map(d=>`<button class="edit-tab ${d.id===editingDayId?'active':''}" onclick="setEditDay('${d.id}')">${d.title}</button>`).join('')}
+    </div>
+    <div class="edit-list">
+      ${d.exercises.map((ex,i)=>`
+        <div class="edit-ex-row">
+          <div class="edit-ex-info" onclick="openEditExModal('${d.id}',${i})">
+            <div class="edit-ex-name">${ex.name}</div>
+            <div class="edit-ex-detail">${ex.series} · ${ex.reps} · ${ex.carga}</div>
+          </div>
+          <div class="edit-ex-actions">
+            <button class="edit-btn" onclick="openEditExModal('${d.id}',${i})">✏️</button>
+            <button class="edit-btn del" onclick="deleteExercise('${d.id}',${i})">🗑</button>
+          </div>
+        </div>`).join('')}
+    </div>
+    <button class="add-ex-btn" onclick="openAddExModal('${d.id}')">＋ Agregar ejercicio</button>
+    <div style="height:24px"></div>`;
+}
+
+function setEditDay(id) { editingDayId=id; renderEdit(); }
+
+function openEditExModal(dayId, exIdx) {
+  editingDayId = dayId;
+  editingExIdx = exIdx;
+  const ex = getDay(dayId).exercises[exIdx];
+  document.getElementById('exModalTitle').innerHTML = `Editar <span>Ejercicio</span>`;
+  document.getElementById('exName').value = ex.name;
+  document.getElementById('exSeries').value = ex.series;
+  document.getElementById('exReps').value = ex.reps;
+  document.getElementById('exCarga').value = ex.carga;
+  document.getElementById('exPausa').value = ex.pausa;
+  document.getElementById('exMusculos').value = (ex.musculos||[]).join(', ');
+  document.getElementById('exTip').value = ex.tip.replace(/<[^>]+>/g,'');
+  document.getElementById('exSeccion').value = ex.sec||'principal';
+  document.getElementById('exModal').classList.add('open');
+}
+
+function openAddExModal(dayId) {
+  editingDayId = dayId;
+  editingExIdx = null;
+  document.getElementById('exModalTitle').innerHTML = `Nuevo <span>Ejercicio</span>`;
+  ['exName','exSeries','exReps','exCarga','exPausa','exMusculos','exTip'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('exSeccion').value='principal';
+  document.getElementById('exModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('exModal').classList.remove('open'); }
+
+function saveExercise() {
+  const name = document.getElementById('exName').value.trim();
+  if(!name) { showToast('Escribí el nombre del ejercicio'); return; }
+  const ex = {
+    id: editingExIdx!==null ? getDay(editingDayId).exercises[editingExIdx].id : 'ex'+Date.now(),
+    name,
+    series: document.getElementById('exSeries').value.trim()||'3 series',
+    reps: document.getElementById('exReps').value.trim()||'12 reps',
+    carga: document.getElementById('exCarga').value.trim()||'—',
+    pausa: document.getElementById('exPausa').value.trim()||'90 seg',
+    musculos: document.getElementById('exMusculos').value.split(',').map(m=>m.trim()).filter(Boolean),
+    tip: document.getElementById('exTip').value.trim()||'—',
+    sec: document.getElementById('exSeccion').value,
+  };
+  const d = getDay(editingDayId);
+  if(editingExIdx!==null) { d.exercises[editingExIdx]=ex; }
+  else { d.exercises.push(ex); }
+  saveDays();
+  closeModal();
+  renderEdit();
+  showToast(editingExIdx!==null?'✓ Ejercicio actualizado':'✓ Ejercicio agregado');
+}
+
+function deleteExercise(dayId, exIdx) {
+  const d = getDay(dayId);
+  const ex = d.exercises[exIdx];
+  if(!confirm(`¿Eliminar "${ex.name}"?`)) return;
+  d.exercises.splice(exIdx,1);
+  saveDays();
+  renderEdit();
+  showToast('Ejercicio eliminado');
+}
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════
+// PWA INSTALL
+// ═══════════════════════════════════════════
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstall = e;
+  const b = document.getElementById('installBanner');
+  if(b) b.classList.add('show');
+});
+function installApp() {
+  if(!deferredInstall) return;
+  deferredInstall.prompt();
+  deferredInstall.userChoice.then(()=>{ deferredInstall=null; const b=document.getElementById('installBanner'); if(b)b.classList.remove('show'); });
+}
+window.addEventListener('appinstalled',()=>showToast('✓ App instalada correctamente'));
+
+// ═══════════════════════════════════════════
+// SERVICE WORKER
+// ═══════════════════════════════════════════
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+renderHome();
 </script>
 </body>
 </html>
